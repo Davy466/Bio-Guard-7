@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bio-Guard - Sobre o Projeto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #4FC3F7 0%, #29B6F6 50%, #03A9F4 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #03A9F4;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .page-title p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            margin: 0 20px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 40px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .content-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #03A9F4;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .section-content p {
+            margin-bottom: 20px;
+        }
+
+        .section-content ul {
+            margin: 20px 0 20px 25px;
+        }
+
+        .section-content li {
+            margin-bottom: 10px;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border-left: 4px solid #03A9F4;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            font-style: italic;
+            color: #1976D2;
+        }
+
+        /* Tech Specs Grid */
+        .tech-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .tech-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .tech-card h4 {
+            color: #03A9F4;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tech-card p {
+            font-size: 0.95rem;
+            color: #666;
+            margin: 0;
+        }
+
+        /* Materials List */
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .material-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #03A9F4;
+            font-size: 0.95rem;
+        }
+
+        /* Steps List */
+        .steps-list {
+            counter-reset: step-counter;
+        }
+
+        .step-item {
+            counter-increment: step-counter;
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #03A9F4;
+            position: relative;
+        }
+
+        .step-item::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -15px;
+            top: 15px;
+            background: #03A9F4;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .step-item h5 {
+            color: #03A9F4;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Applications Grid */
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .application-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        .application-card h5 {
+            color: #03A9F4;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .application-card p {
+            font-size: 0.95rem;
+            color: #666;
+            margin: 0;
+        }
+
+        /* Quote Box */
+        .quote-box {
+            background: linear-gradient(135deg, #03A9F4 0%, #0288D1 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 30px 0;
+            font-size: 1.2rem;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        /* Back Button */
+        .back-section {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .back-btn {
+            background: #03A9F4;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(3, 169, 244, 0.3);
+        }
+
+        .back-btn:hover {
+            background: #0288D1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(3, 169, 244, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .main-content {
+                margin: 0 10px 20px;
+            }
+
+            .content-section {
+                padding: 25px 20px;
+            }
+
+            .page-title h1 {
+                font-size: 2rem;
+            }
+
+            .tech-specs,
+            .materials-grid,
+            .applications-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .content-section:nth-child(2) { animation-delay: 0.1s; }
+        .content-section:nth-child(3) { animation-delay: 0.2s; }
+        .content-section:nth-child(4) { animation-delay: 0.3s; }
+        .content-section:nth-child(5) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">BG</div>
+                <span class="logo-text">Bio-Guard</span>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="sensores-flat.html" class="nav-link">Sensores</a>
+                <a href="projeto-flat.html" class="nav-link active">Projeto</a>
+                <a href="contato.html" class="nav-link">Contato</a>
+                <a href="sensores-flat.html" class="nav-btn">Conectar</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Title -->
+    <section class="page-title">
+        <h1>Sobre o Projeto</h1>
+        <p>Sistema inovador para monitoramento de qualidade da água</p>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Introdução -->
+        <section class="content-section">
+            <h2 class="section-title">
+                <span>🌊</span>
+                Introdução e Justificativa
+            </h2>
+            <div class="section-content">
+                <p>
+                    O Bio-Guard é um sistema portátil e inovador desenvolvido para monitorar a qualidade da água em tempo real, 
+                    utilizando sensores avançados conectados a um microcontrolador ESP32. Nossa solução integra sensores de pH, 
+                    condutividade e RGB para oferecer uma análise completa e acessível da qualidade hídrica.
+                </p>
+                
+                <p>
+                    A escolha deste projeto surge da crescente preocupação com a poluição hídrica no Brasil e da necessidade 
+                    urgente de soluções tecnológicas acessíveis para monitoramento ambiental. A água limpa é um recurso 
+                    essencial para a saúde humana, agricultura sustentável e preservação do meio ambiente.
+                </p>
+                
+                <div class="highlight-box">
+                    <strong>Dados de apoio:</strong> Segundo a ONU, 40% da população mundial enfrenta escassez de água potável, 
+                    e no Brasil, rios urbanos apresentam níveis críticos de poluição, tornando projetos como o Bio-Guard 
+                    fundamentais para o futuro sustentável.
+                </div>
+            </div>
+        </section>
+
+        <!-- Funcionamento Tecnológico -->
+        <section class="content-section">
+            <h2 class="section-title">
+                <span>⚙️</span>
+                Funcionamento Tecnológico
+            </h2>
+            <div class="section-content">
+                <p>O sistema Bio-Guard opera através da integração de múltiplos sensores especializados:</p>
+                
+                <div class="tech-specs">
+                    <div class="tech-card">
+                        <h4><span>🎨</span> Sensor RGB (TCS34725)</h4>
+                        <p>Identifica variações na coloração da água, onde tons vermelhos intensos indicam possível contaminação</p>
+                    </div>
+                    <div class="tech-card">
+                        <h4><span>💡</span> Sensor LDR</h4>
+                        <p>Mede a intensidade de luz para análise de turbidez da água</p>
+                    </div>
+                    <div class="tech-card">
+                        <h4><span>🧪</span> Sensor de pH</h4>
+                        <p>Mede a acidez ou alcalinidade da água, indicando desequilíbrios químicos</p>
+                    </div>
+                    <div class="tech-card">
+                        <h4><span>⚡</span> Sensor de Condutividade</h4>
+                        <p>Detecta a concentração de sais e poluentes dissolvidos na água</p>
+                    </div>
+                </div>
+                
+                <p>
+                    O ESP32 atua como o cérebro do sistema, coletando dados de todos os sensores e transmitindo as informações 
+                    via Bluetooth integrado diretamente para este site. A interface web exibe os dados em tempo real, 
+                    permitindo monitoramento instantâneo e análise contínua da qualidade da água.
+                </p>
+                
+                <div class="highlight-box">
+                    <strong>Pinagem dos sensores:</strong><br>
+                    • Sensor RGB TCS34725: SDA (pino 21), SCL (pino 22), VCC (3V3), GND<br>
+                    • Sensor LDR: VCC (3V3), GND, DO (pino 34 analógico)
+                </div>
+            </div>
+        </section>
+
+        <!-- Construção e Materiais -->
+        <section class="content-section">
+            <h2 class="section-title">
+                <span>🔧</span>
+                Construção e Materiais
+            </h2>
+            <div class="section-content">
+                <p>O desenvolvimento do Bio-Guard envolveu a seleção criteriosa de componentes e uma metodologia estruturada de montagem:</p>
+                
+                <h4 style="color: #03A9F4; margin: 25px 0 15px 0;">Materiais utilizados:</h4>
+                <div class="materials-grid">
+                    <div class="material-item">ESP32 (com Bluetooth integrado)</div>
+                    <div class="material-item">Sensor de pH digital</div>
+                    <div class="material-item">Sensor de condutividade</div>
+                    <div class="material-item">Sensor RGB TCS34725</div>
+                    <div class="material-item">Sensor LDR</div>
+                    <div class="material-item">Jumpers e protoboard</div>
+                    <div class="material-item">LEDs indicadores</div>
+                    <div class="material-item">Resistores</div>
+                    <div class="material-item">Fonte de alimentação USB</div>
+                    <div class="material-item">Bateria recarregável</div>
+                </div>
+                
+                <h4 style="color: #03A9F4; margin: 25px 0 15px 0;">Etapas de construção:</h4>
+                <div class="steps-list">
+                    <div class="step-item">
+                        <h5>Planejamento e Design</h5>
+                        <p>Elaboração do circuito eletrônico e definição da arquitetura do sistema</p>
+                    </div>
+                    <div class="step-item">
+                        <h5>Montagem Física</h5>
+                        <p>Conexão dos componentes na protoboard seguindo o diagrama elétrico</p>
+                    </div>
+                    <div class="step-item">
+                        <h5>Teste Individual</h5>
+                        <p>Verificação do funcionamento de cada sensor separadamente</p>
+                    </div>
+                    <div class="step-item">
+                        <h5>Programação</h5>
+                        <p>Desenvolvimento do código para ESP32 com algoritmos de leitura e transmissão</p>
+                    </div>
+                    <div class="step-item">
+                        <h5>Interface Web</h5>
+                        <p>Criação da interface web com integração Bluetooth para visualização dos dados</p>
+                    </div>
+                    <div class="step-item">
+                        <h5>Calibração</h5>
+                        <p>Testes extensivos e calibração dos sensores para maior precisão</p>
+                    </div>
+                    <div class="step-item">
+                        <h5>Otimização</h5>
+                        <p>Ajustes finais e otimização do sistema para melhor desempenho</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aplicações -->
+        <section class="content-section">
+            <h2 class="section-title">
+                <span>🌍</span>
+                Aplicações e Impacto
+            </h2>
+            <div class="section-content">
+                <p>O Bio-Guard possui um amplo espectro de aplicações práticas que podem beneficiar diversos setores da sociedade:</p>
+                
+                <div class="applications-grid">
+                    <div class="application-card">
+                        <h5><span>🏞️</span> Monitoramento Ambiental</h5>
+                        <p>Análise de rios, lagos, nascentes e reservatórios para preservação dos ecossistemas aquáticos</p>
+                    </div>
+                    <div class="application-card">
+                        <h5><span>🚰</span> Controle de Qualidade</h5>
+                        <p>Verificação da qualidade da água potável em residências e estabelecimentos comerciais</p>
+                    </div>
+                    <div class="application-card">
+                        <h5><span>🎓</span> Educação</h5>
+                        <p>Ferramenta pedagógica para ensino de ciências ambientais em escolas e universidades</p>
+                    </div>
+                    <div class="application-card">
+                        <h5><span>🌾</span> Agricultura</h5>
+                        <p>Análise da qualidade da água para irrigação e otimização da produção agrícola</p>
+                    </div>
+                    <div class="application-card">
+                        <h5><span>🔬</span> Pesquisa</h5>
+                        <p>Estudos de impacto ambiental, poluição hídrica e desenvolvimento sustentável</p>
+                    </div>
+                    <div class="application-card">
+                        <h5><span>🏭</span> Indústria</h5>
+                        <p>Monitoramento de efluentes industriais e controle de processos produtivos</p>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <strong>Principais vantagens:</strong> Baixo custo de implementação, portabilidade, dados em tempo real, 
+                    interface intuitiva, potencial educativo elevado e contribuição significativa para a consciência ambiental.
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusão -->
+        <section class="content-section">
+            <h2 class="section-title">
+                <span>🎯</span>
+                Conclusão e Perspectivas
+            </h2>
+            <div class="section-content">
+                <p>
+                    Este projeto representou uma jornada de aprendizado extraordinária para nossa equipe. Desenvolvemos 
+                    competências em trabalho colaborativo, programação de microcontroladores, eletrônica aplicada, 
+                    análise de dados e comunicação científica. Os desafios enfrentados nos tornaram mais resilientes 
+                    e criativos na busca por soluções inovadoras.
+                </p>
+                
+                <p>
+                    O Bio-Guard demonstra como a tecnologia pode ser aplicada de forma acessível e eficiente para resolver 
+                    problemas ambientais reais. A integração entre hardware e software, aliada à interface web intuitiva, 
+                    torna o sistema uma ferramenta valiosa para diversos contextos de aplicação.
+                </p>
+                
+                <h4 style="color: #03A9F4; margin: 25px 0 15px 0;">Próximos passos:</h4>
+                <ul>
+                    <li>Desenvolvimento de uma versão à prova d'água para uso em campo</li>
+                    <li>Implementação de alimentação por energia solar para maior autonomia</li>
+                    <li>Expansão do conjunto de sensores para análises ainda mais completas</li>
+                    <li>Criação de um aplicativo móvel para monitoramento remoto</li>
+                    <li>Estabelecimento de parcerias com órgãos ambientais</li>
+                </ul>
+                
+                <div class="quote-box">
+                    "Com o Bio-Guard, a ciência trabalha em defesa da água limpa e da vida."
+                </div>
+            </div>
+        </section>
+
+        <!-- Back Section -->
+        <div class="back-section">
+            <a href="sensores-flat.html" class="back-btn">Voltar para Sensores</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>2° ano AGR - Escola Estadual João XXIII - Barra de São Francisco - ES - 2025</p>
+    </footer>
+</body>
+</html>
+

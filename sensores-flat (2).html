@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bio-Guard - Sensores</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #4FC3F7 0%, #29B6F6 50%, #03A9F4 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #03A9F4;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .page-title p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            margin: 0 20px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Connection Info */
+        .connection-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .connection-info h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .connection-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .step {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #03A9F4;
+            font-size: 0.9rem;
+        }
+
+        .step-number {
+            font-weight: 600;
+            color: #03A9F4;
+            margin-right: 8px;
+        }
+
+        .note {
+            background: #E3F2FD;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #1976D2;
+        }
+
+        /* Sensor Cards */
+        .sensors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .sensor-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sensor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .sensor-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        /* Termômetro Flat */
+        .thermometer-flat {
+            width: 60px;
+            height: 200px;
+            background: #f8f9fa;
+            border-radius: 30px;
+            margin: 0 auto 20px;
+            position: relative;
+            border: 2px solid #e9ecef;
+        }
+
+        .thermometer-fill-flat {
+            position: absolute;
+            bottom: 2px;
+            left: 2px;
+            right: 2px;
+            border-radius: 0 0 26px 26px;
+            transition: all 1s ease;
+            height: 30%;
+            background: #4CAF50;
+        }
+
+        .thermometer-bulb-flat {
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #4CAF50;
+            border: 2px solid #e9ecef;
+        }
+
+        .thermometer-scale {
+            position: absolute;
+            right: -60px;
+            top: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .scale-label {
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: 500;
+            background: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #e9ecef;
+        }
+
+        /* LDR Display Flat */
+        .ldr-display-flat {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #FF9800;
+            margin: 20px 0;
+            text-shadow: 0 2px 4px rgba(255, 152, 0, 0.2);
+        }
+
+        .ldr-label-flat {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Sensor Data */
+        .sensor-data {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .sensor-data div {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        /* Status Indicators */
+        .status-flat {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+
+        .status-flat.connected {
+            background: #E8F5E8;
+            color: #2E7D32;
+        }
+
+        .status-flat.disconnected {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+
+        .status-flat.connecting {
+            background: #FFF3E0;
+            color: #F57C00;
+        }
+
+        /* Console Flat */
+        .console-flat {
+            background: #263238;
+            color: #4CAF50;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #37474F;
+        }
+
+        .console-header {
+            color: #81C784;
+            margin-bottom: 10px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Connection Section */
+        .connection-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+        }
+
+        .connect-btn-flat {
+            background: #03A9F4;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(3, 169, 244, 0.3);
+        }
+
+        .connect-btn-flat:hover {
+            background: #0288D1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(3, 169, 244, 0.4);
+        }
+
+        .connect-btn-flat:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Level Colors */
+        .level-baixa {
+            background: #4CAF50 !important;
+        }
+
+        .level-media {
+            background: #FF9800 !important;
+        }
+
+        .level-alta {
+            background: #F44336 !important;
+        }
+
+        /* Water Status Section */
+        .water-status-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .water-status-card h3 {
+            font-size: 1.5rem;
+            color: #03A9F4;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .status-message {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .status-message.good {
+            background: #E8F5E8;
+            color: #2E7D32;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .status-message.warning {
+            background: #FFF3E0;
+            color: #F57C00;
+            border-left: 4px solid #FF9800;
+        }
+
+        .status-message.danger {
+            background: #FFEBEE;
+            color: #C62828;
+            border-left: 4px solid #F44336;
+        }
+
+        .status-details {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .recommendations {
+            background: #E3F2FD;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #03A9F4;
+        }
+
+        .recommendations h4 {
+            color: #1976D2;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .recommendations ul {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .recommendations li {
+            margin-bottom: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .sensors-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .main-content {
+                margin: 0 10px 20px;
+            }
+
+            .connection-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title h1 {
+                font-size: 2rem;
+            }
+
+            .thermometer-scale {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sensor-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .sensor-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .sensor-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">BG</div>
+                <span class="logo-text">Bio-Guard</span>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="projeto-flat.html" class="nav-link">Projeto</a>
+                <a href="contato.html" class="nav-link">Contato</a>
+            </nav>
+    </header>
+
+    <!-- Page Title -->
+    <section class="page-title">
+        <h1>Monitoramento de Sensores</h1>
+        <p>Dados em tempo real do sistema Bio-Guard</p>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Connection Info -->
+        <div class="connection-info">
+            <h3>📋 Como conectar ao Bio-Guard:</h3>
+            <div class="connection-steps">
+                <div class="step">
+                    <span class="step-number">1.</span>
+                    Pareie o ESP32 com o computador via Bluetooth nas configurações do sistema
+                </div>
+                <div class="step">
+                    <span class="step-number">2.</span>
+                    Clique no botão "Conectar ao Bio-Guard via Bluetooth"
+                </div>
+                <div class="step">
+                    <span class="step-number">3.</span>
+                    Selecione a porta COM do ESP32 na janela que abrir
+                </div>
+                <div class="step">
+                    <span class="step-number">4.</span>
+                    Aguarde a conexão ser estabelecida
+                </div>
+            </div>
+            <div class="note">
+                <strong>Nota:</strong> Use o Chrome ou Edge para melhor compatibilidade com Web Serial API
+            </div>
+        </div>
+
+        <!-- Sensors Grid -->
+        <div class="sensors-grid">
+            <!-- Sensor RGB Card -->
+            <div class="sensor-card">
+                <h4 class="sensor-title">Nível de Contaminação</h4>
+                
+                <div class="thermometer-flat">
+                    <div class="thermometer-fill-flat level-baixa" id="thermometerFill"></div>
+                    <div class="thermometer-bulb-flat level-baixa" id="thermometerBulb"></div>
+                    <div class="thermometer-scale">
+                        <span class="scale-label">Alta</span>
+                        <span class="scale-label">Média</span>
+                        <span class="scale-label">Baixa</span>
+                    </div>
+                </div>
+
+                <div class="sensor-data" id="rgbData">
+                    <div><strong>Cor:</strong> Aguardando dados...</div>
+                    <div><strong>Contaminação:</strong> --</div>
+                </div>
+                
+                <div class="status-flat disconnected" id="rgbStatus">Desconectado</div>
+            </div>
+
+            <!-- Sensor LDR Card -->
+            <div class="sensor-card">
+                <h4 class="sensor-title">Sensor de Luminosidade</h4>
+                
+                <div class="ldr-display-flat" id="ldrValue">--%</div>
+                <div class="ldr-label-flat">Intensidade de Luz</div>
+                
+                <div class="sensor-data">
+                    <div>Medição da intensidade luminosa para análise de turbidez da água</div>
+                </div>
+                
+                <div class="status-flat disconnected" id="ldrStatus">Desconectado</div>
+            </div>
+        </div>
+
+        <!-- Water Status Section -->
+        <div id="waterStatusSection" class="hidden">
+            <div class="water-status-card">
+                <h3>🌊 Situação Atual da Água</h3>
+                <div id="waterStatusText">
+                    <div class="status-message" id="statusMessage">Aguardando dados dos sensores...</div>
+                    <div class="status-details" id="statusDetails"></div>
+                    <div class="recommendations" id="recommendations"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Console -->
+        <div class="console-flat">
+            <div class="console-header">
+                <span>📡</span>
+                <span>Dados Recebidos do ESP32:</span>
+            </div>
+            <div id="dataConsole">Aguardando conexão...</div>
+        </div>
+
+        <!-- Connection Section -->
+        <div class="connection-section">
+            <button class="connect-btn-flat" id="connectBtn">
+                Conectar ao Bio-Guard via Bluetooth
+            </button>
+            <div class="status-flat disconnected" id="connectionStatus">
+                Desconectado - Clique para conectar
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Variáveis globais
+        let port;
+        let reader;
+        let isConnected = false;
+
+        // Elementos DOM
+        const connectBtn = document.getElementById('connectBtn');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const dataConsole = document.getElementById('dataConsole');
+        const thermometerFill = document.getElementById('thermometerFill');
+        const thermometerBulb = document.getElementById('thermometerBulb');
+        const rgbData = document.getElementById('rgbData');
+        const rgbStatus = document.getElementById('rgbStatus');
+        const ldrValue = document.getElementById('ldrValue');
+        const ldrStatus = document.getElementById("ldrStatus");
+        const waterStatusSection = document.getElementById("waterStatusSection");
+        const statusMessage = document.getElementById("statusMessage");
+        const statusDetails = document.getElementById("statusDetails");
+        const recommendations = document.getElementById("recommendations");
+
+        // Verificar suporte da Web Serial API
+        if (!('serial' in navigator)) {
+            alert('Web Serial API não é suportada neste navegador. Use Chrome ou Edge.');
+        }
+
+        // Função principal de conexão
+        async function connectToBioGuard() {
+            if (isConnected) {
+                await disconnect();
+            } else {
+                await connectBluetooth();
+            }
+        }
+
+        // Função para conectar via Bluetooth
+        async function connectBluetooth() {
+            try {
+                updateConnectionStatus('Conectando...', 'connecting');
+                connectBtn.disabled = true;
+
+                port = await navigator.serial.requestPort();
+                await port.open({ 
+                    baudRate: 9600,
+                    dataBits: 8,
+                    stopBits: 1,
+                    parity: 'none'
+                });
+
+                isConnected = true;
+                updateConnectionStatus('Conectado - Recebendo dados', 'connected');
+                connectBtn.textContent = 'Desconectar';
+                connectBtn.disabled = false;
+
+                readData();
+
+            } catch (error) {
+                console.error('Erro na conexão:', error);
+                updateConnectionStatus('Erro na conexão', 'disconnected');
+                connectBtn.disabled = false;
+                
+                if (error.name === 'NotFoundError') {
+                    alert('Nenhuma porta selecionada. Certifique-se de que o ESP32 está pareado via Bluetooth.');
+                } else {
+                    alert('Erro ao conectar: ' + error.message);
+                }
+            }
+        }
+
+        // Função para desconectar
+        async function disconnect() {
+            try {
+                if (reader) {
+                    await reader.cancel();
+                    reader.releaseLock();
+                }
+                
+                if (port) {
+                    await port.close();
+                }
+
+                isConnected = false;
+                updateConnectionStatus('Desconectado - Clique para conectar', 'disconnected');
+                connectBtn.textContent = 'Conectar ao Bio-Guard via Bluetooth';
+                connectBtn.disabled = false;
+
+                    // Resetar interface
+                dataConsole.textContent = 'Aguardando conexão...';
+                rgbData.innerHTML = '<div><strong>Cor:</strong> Aguardando dados...</div><div><strong>Contaminação:</strong> --</div>';
+                ldrValue.textContent = '--%';
+                updateThermometer(30, 'level-baixa');
+
+            } catch (error) {
+                console.error('Erro ao desconectar:', error);
+            }
+        }
+
+        // Função para atualizar status de conexão
+        function updateConnectionStatus(text, status) {
+            connectionStatus.textContent = text;
+            connectionStatus.className = `status-flat ${status}`;
+            rgbStatus.className = `status-flat ${status}`;
+            ldrStatus.className = `status-flat ${status}`;
+            
+            if (status === 'connected') {
+                rgbStatus.textContent = 'Conectado';
+                ldrStatus.textContent = 'Conectado';
+            } else if (status === 'connecting') {
+                rgbStatus.textContent = 'Conectando...';
+                ldrStatus.textContent = 'Conectando...';
+            } else {
+                rgbStatus.textContent = 'Desconectado';
+                ldrStatus.textContent = 'Desconectado';
+            }
+        }
+
+        // Função para ler dados da porta serial
+        async function readData() {
+            try {
+                const textDecoder = new TextDecoderStream();
+                const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+                reader = textDecoder.readable.getReader();
+
+                let buffer = '';
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+
+                    buffer += value;
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop();
+
+                    for (const line of lines) {
+                        if (line.trim()) {
+                            processData(line.trim());
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Erro na leitura:', error);
+                if (isConnected) {
+                    disconnect();
+                }
+            }
+        }
+
+        // Função para processar dados recebidos
+        function processData(data) {
+            const timestamp = new Date().toLocaleTimeString();
+            dataConsole.innerHTML += `[${timestamp}] ${data}<br>`;
+            dataConsole.scrollTop = dataConsole.scrollHeight;
+
+            try {
+                const sensorData = JSON.parse(data);
+                
+                if (sensorData.rgb) {
+                    const { r, g, b } = sensorData.rgb;
+                    const contamination = calculateContamination(r, g, b);
+                    updateRGBSensor(r, g, b, contamination);
+                }
+
+                if (sensorData.ldr !== undefined) {
+                    updateLDR(sensorData.ldr);
+                }
+
+            } catch (error) {
+                if (data.includes('RGB:')) {
+                    const rgbMatch = data.match(/RGB:\s*R(\d+)\s*G(\d+)\s*B(\d+)/);
+                    if (rgbMatch) {
+                        const r = parseInt(rgbMatch[1]);
+                        const g = parseInt(rgbMatch[2]);
+                        const b = parseInt(rgbMatch[3]);
+                        const contamination = calculateContamination(r, g, b);
+                        updateRGBSensor(r, g, b, contamination);
+                    }
+                }
+
+                if (data.includes('LDR:')) {
+                    const ldrMatch = data.match(/LDR:\s*(\d+)/);
+                    if (ldrMatch) {
+                        const ldrVal = parseInt(ldrMatch[1]);
+                        updateLDR(ldrVal);
+                        updateWaterStatus(rgbValue, ldrVal);
+                    }
+                }
+            }
+        }
+
+        // Função para calcular nível de contaminação
+        function calculateContamination(r, g, b) {
+            const redIntensity = r / (r + g + b + 1);
+            return Math.min(100, redIntensity * 200);
+        }
+
+        // Função para atualizar sensor RGB
+        function updateRGBSensor(r, g, b, contamination) {
+            rgbData.innerHTML = `
+                <div><strong>Cor:</strong> R:${r} G:${g} B:${b}</div>
+                <div><strong>Contaminação:</strong> ${contamination.toFixed(1)}%</div>
+            `;
+
+            let level = 'level-baixa';
+            let height = 30;
+
+            if (contamination > 70) {
+                level = 'level-alta';
+                height = 90;
+            } else if (contamination > 40) {
+                level = 'level-media';
+                height = 65;
+            } else {
+                height = Math.max(30, contamination);
+            }
+
+            updateThermometer(height, level);
+        }
+
+        // Função para atualizar termômetro
+        function updateThermometer(percentage, level) {
+            thermometerFill.style.height = `${percentage}%`;
+            thermometerFill.className = `thermometer-fill-flat ${level}`;
+            thermometerBulb.className = `thermometer-bulb-flat ${level}`;
+        }
+
+        // Função para atualizar sensor LDR
+        function updateLDR(value) {
+            const percentage = Math.min(100, (value / 1023) * 100);
+            ldrValue.textContent = `${percentage.toFixed(0)}%`;
+        }
+
+        // Event listeners
+        connectBtn.addEventListener('click', connectToBioGuard);
+
+        // Limpar console
+        setInterval(() => {
+            const lines = dataConsole.innerHTML.split('<br>');
+            if (lines.length > 100) {
+                dataConsole.innerHTML = lines.slice(-50).join('<br>');
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
+
+
+
+        // Função para atualizar o status da água
+        function updateWaterStatus(rgbVal, ldrVal) {
+            let message = "";
+            let details = "";
+            let recommendationsList = [];
+            let statusClass = "";
+
+            // Lógica baseada nos valores RGB e LDR
+            // Exemplo simplificado: adaptar conforme a lógica real dos sensores
+
+            // Análise de Contaminação (RGB)
+            if (rgbVal < 50) { // Exemplo: valores baixos de RGB indicam água limpa
+                message = "Água com boa qualidade.";
+                statusClass = "good";
+                details += "Cor da água indica baixa contaminação.";
+            } else if (rgbVal >= 50 && rgbVal < 150) {
+                message = "Qualidade da água moderada.";
+                statusClass = "warning";
+                details += "Pode haver alguma turbidez ou coloração incomum.";
+                recommendationsList.push("Realizar filtragem básica.");
+            } else {
+                message = "Água com alta contaminação!";
+                statusClass = "danger";
+                details += "Cor da água indica alta presença de contaminantes.";
+                recommendationsList.push("Evitar o consumo.", "Realizar tratamento intensivo.");
+            }
+
+            // Análise de Luminosidade (LDR)
+            if (ldrVal < 20) { // Exemplo: valores baixos de LDR indicam pouca luz, água turva
+                details += " Baixa luminosidade, indicando turbidez.";
+                recommendationsList.push("Verificar a presença de partículas em suspensão.");
+            } else if (ldrVal > 80) { // Exemplo: valores altos de LDR indicam muita luz, água clara
+                details += " Alta luminosidade, água clara.";
+            }
+
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${statusClass}`;
+            statusDetails.textContent = details;
+
+            recommendations.innerHTML = "";
+            if (recommendationsList.length > 0) {
+                const ul = document.createElement("ul");
+                recommendationsList.forEach(rec => {
+                    const li = document.createElement("li");
+                    li.textContent = rec;
+                    ul.appendChild(li);
+                });
+                recommendations.appendChild(document.createElement("h4")).textContent = "Recomendações:";
+                recommendations.appendChild(ul);
+            }
+
+            waterStatusSection.classList.remove("hidden");
+        }
+
