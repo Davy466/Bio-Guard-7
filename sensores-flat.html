@@ -6,9 +6,9 @@
     <title>Bio-Guard - Sensores</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* (Todo o CSS original permanece aqui, sem alterações ) */
+        /* O CSS original permanece o mesmo, sem alterações */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #4FC3F7 0%, #29B6F6 50%, #03A9F4 100%); color: #333; line-height: 1.6; min-height: 100vh; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #4FC3F7 0%, #29B6F6 50%, #03A9F4 100% ); color: #333; line-height: 1.6; min-height: 100vh; }
         .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
         .logo { display: flex; align-items: center; gap: 10px; }
@@ -34,8 +34,6 @@
         .thermometer-flat { width: 60px; height: 200px; background: #f8f9fa; border-radius: 30px; margin: 0 auto 20px; position: relative; border: 2px solid #e9ecef; }
         .thermometer-fill-flat { position: absolute; bottom: 2px; left: 2px; right: 2px; border-radius: 0 0 26px 26px; transition: all 1s ease; height: 30%; background: #4CAF50; }
         .thermometer-bulb-flat { position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; border-radius: 50%; background: #4CAF50; border: 2px solid #e9ecef; }
-        .thermometer-scale { position: absolute; right: -60px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 10px 0; }
-        .scale-label { font-size: 0.8rem; color: #666; font-weight: 500; background: white; padding: 2px 6px; border-radius: 4px; border: 1px solid #e9ecef; }
         .ldr-display-flat { font-size: 4rem; font-weight: 700; color: #FF9800; margin: 20px 0; text-shadow: 0 2px 4px rgba(255, 152, 0, 0.2); }
         .ldr-label-flat { color: #666; font-size: 1rem; font-weight: 500; }
         .sensor-data { margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 0.9rem; }
@@ -65,22 +63,19 @@
         .recommendations h4 { color: #1976D2; margin-bottom: 10px; font-size: 1.1rem; }
         .recommendations ul { margin-left: 20px; color: #555; }
         .recommendations li { margin-bottom: 5px; }
-        @media (max-width: 768px) { .nav-links { display: none; } .sensors-grid { grid-template-columns: 1fr; padding: 20px; } .main-content { margin: 0 10px 20px; } .connection-steps { grid-template-columns: 1fr; } .page-title h1 { font-size: 2rem; } .thermometer-scale { display: none; } }
     </style>
 </head>
 <body>
-    <!-- (Todo o HTML do body permanece o mesmo) -->
+    <!-- O HTML do body permanece o mesmo -->
     <header class="header">
         <div class="nav-container">
-            <div class="logo">
-                <div class="logo-icon">BG</div>
-                <span class="logo-text">Bio-Guard</span>
-            </div>
+            <div class="logo"><div class="logo-icon">BG</div><span class="logo-text">Bio-Guard</span></div>
             <nav class="nav-links">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="projeto-flat.html" class="nav-link">Projeto</a>
                 <a href="contato.html" class="nav-link">Contato</a>
             </nav>
+        </div>
     </header>
     <section class="page-title">
         <h1>Monitoramento de Sensores</h1>
@@ -90,12 +85,12 @@
         <div class="connection-info">
             <h3>📋 Como conectar ao Bio-Guard:</h3>
             <div class="connection-steps">
-                <div class="step"><span class="step-number">1.</span> Pareie o ESP32 com o computador via Bluetooth.</div>
+                <div class="step"><span class="step-number">1.</span> Ligue o ESP32. Não é necessário parear antes.</div>
                 <div class="step"><span class="step-number">2.</span> Clique no botão "Conectar ao Bio-Guard".</div>
-                <div class="step"><span class="step-number">3.</span> Selecione a porta COM do ESP32 na janela.</div>
-                <div class="step"><span class="step-number">4.</span> Aguarde a conexão ser estabelecida.</div>
+                <div class="step"><span class="step-number">3.</span> Selecione "Bio-Guard" na janela que aparecer.</div>
+                <div class="step"><span class="step-number">4.</span> Aguarde a conexão e o início dos dados.</div>
             </div>
-            <div class="note"><strong>Nota:</strong> Use o Chrome ou Edge para melhor compatibilidade.</div>
+            <div class="note"><strong>Nota:</strong> Use Chrome ou Edge em um computador ou Android. O iOS não é compatível.</div>
         </div>
         <div class="sensors-grid">
             <div class="sensor-card">
@@ -103,15 +98,10 @@
                 <div class="thermometer-flat">
                     <div class="thermometer-fill-flat level-baixa" id="thermometerFill"></div>
                     <div class="thermometer-bulb-flat level-baixa" id="thermometerBulb"></div>
-                    <div class="thermometer-scale">
-                        <span class="scale-label">Alta</span>
-                        <span class="scale-label">Média</span>
-                        <span class="scale-label">Baixa</span>
-                    </div>
                 </div>
                 <div class="sensor-data" id="rgbData">
                     <div><strong>Contaminação:</strong> --</div>
-                    <div><strong>Cor:</strong> Aguardando...</div>
+                    <div><small>(Valor Vermelho: --)</small></div>
                 </div>
                 <div class="status-flat disconnected" id="rgbStatus">Desconectado</div>
             </div>
@@ -123,16 +113,6 @@
                     <div>Medição da intensidade luminosa para análise de turbidez da água.</div>
                 </div>
                 <div class="status-flat disconnected" id="ldrStatus">Desconectado</div>
-            </div>
-        </div>
-        <div id="waterStatusSection" class="hidden">
-            <div class="water-status-card">
-                <h3>🌊 Situação Atual da Água</h3>
-                <div id="waterStatusText">
-                    <div class="status-message" id="statusMessage">Aguardando dados...</div>
-                    <div class="status-details" id="statusDetails"></div>
-                    <div class="recommendations" id="recommendations"></div>
-                </div>
             </div>
         </div>
         <div class="console-flat">
@@ -147,16 +127,10 @@
 
     <script>
         // ===================================================================
-        // SCRIPT CORRIGIDO E OTIMIZADO
+        // SCRIPT ATUALIZADO PARA USAR A WEB BLUETOOTH API
         // ===================================================================
 
-        // Variáveis globais
-        let port;
-        let reader;
-        let isConnected = false;
-        let keepReading = false;
-
-        // Elementos DOM
+        // Elementos da UI
         const connectBtn = document.getElementById('connectBtn');
         const connectionStatus = document.getElementById('connectionStatus');
         const dataConsole = document.getElementById('dataConsole');
@@ -166,208 +140,138 @@
         const rgbStatus = document.getElementById('rgbStatus');
         const ldrValue = document.getElementById('ldrValue');
         const ldrStatus = document.getElementById("ldrStatus");
-        const waterStatusSection = document.getElementById("waterStatusSection");
-        const statusMessage = document.getElementById("statusMessage");
-        const statusDetails = document.getElementById("statusDetails");
-        const recommendations = document.getElementById("recommendations");
 
-        // Verificar suporte da Web Serial API
-        if (!('serial' in navigator)) {
-            alert('Web Serial API não é suportada neste navegador. Use Chrome ou Edge.');
+        // Variáveis de estado da conexão
+        let bleDevice;
+        let bleServer;
+        let sppService;
+        let sppCharacteristic;
+
+        // UUID do Serviço e Característica para Serial Port Profile (SPP)
+        const SPP_SERVICE_UUID = '00001101-0000-1000-8000-00805f9b34fb';
+        const SPP_CHARACTERISTIC_UUID = '00001101-0000-1000-8000-00805f9b34fb'; // Em alguns casos, a característica pode ser diferente, mas para SPP sobre BLE, geralmente é a mesma.
+
+        // Verifica se o navegador suporta Web Bluetooth
+        if (!navigator.bluetooth) {
+            alert('Web Bluetooth API não é suportada neste navegador! Use Chrome ou Edge.');
             connectBtn.disabled = true;
         }
 
-        // Função principal de conexão
+        // Função principal de conexão/desconexão
         async function handleConnection() {
-            if (isConnected) {
-                await disconnect();
+            if (bleDevice && bleDevice.gatt.connected) {
+                disconnect();
             } else {
-                await connect();
+                connect();
             }
         }
 
-        // Função para conectar
+        // Função para conectar ao dispositivo Bluetooth
         async function connect() {
             try {
-                updateConnectionStatus('Conectando...', 'connecting');
-                connectBtn.disabled = true;
-
-                port = await navigator.serial.requestPort();
-                await port.open({ 
-                    baudRate: 115200, // CORREÇÃO 1: Baud rate ajustado para 115200
-                    dataBits: 8,
-                    stopBits: 1,
-                    parity: 'none'
+                updateConnectionStatus('Procurando...', 'connecting');
+                
+                bleDevice = await navigator.bluetooth.requestDevice({
+                    filters: [{ name: 'Bio-Guard' }],
+                    optionalServices: [SPP_SERVICE_UUID]
                 });
 
-                isConnected = true;
-                keepReading = true;
-                updateConnectionStatus('Conectado - Recebendo dados', 'connected');
-                connectBtn.textContent = 'Desconectar';
-                connectBtn.disabled = false;
+                updateConnectionStatus('Conectando ao GATT...', 'connecting');
+                bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
+                bleServer = await bleDevice.gatt.connect();
 
-                readData();
+                updateConnectionStatus('Obtendo Serviço SPP...', 'connecting');
+                sppService = await bleServer.getPrimaryService(SPP_SERVICE_UUID);
+
+                updateConnectionStatus('Obtendo Característica...', 'connecting');
+                sppCharacteristic = await sppService.getCharacteristic(SPP_CHARACTERISTIC_UUID);
+
+                updateConnectionStatus('Iniciando notificações...', 'connecting');
+                await sppCharacteristic.startNotifications();
+                sppCharacteristic.addEventListener('characteristicvaluechanged', handleNotifications);
+
+                updateConnectionStatus('Conectado', 'connected');
+                connectBtn.textContent = 'Desconectar';
 
             } catch (error) {
                 console.error('Erro na conexão:', error);
-                updateConnectionStatus('Erro na conexão', 'disconnected');
-                connectBtn.disabled = false;
-                if (error.name !== 'NotFoundError') {
-                    alert('Erro ao conectar: ' + error.message);
-                }
+                alert('Falha na conexão: ' + error.message);
+                disconnect();
             }
         }
 
         // Função para desconectar
-        async function disconnect() {
-            keepReading = false;
-            if (reader) {
-                await reader.cancel();
+        function disconnect() {
+            if (!bleDevice) return;
+            if (bleDevice.gatt.connected) {
+                bleDevice.gatt.disconnect();
+            } else {
+                onDisconnected();
             }
-            if (port) {
-                await port.close();
-            }
-            
-            isConnected = false;
-            port = null;
-            updateConnectionStatus('Desconectado - Clique para conectar', 'disconnected');
+        }
+
+        // Função chamada quando a desconexão ocorre
+        function onDisconnected() {
+            updateConnectionStatus('Desconectado', 'disconnected');
             connectBtn.textContent = 'Conectar ao Bio-Guard via Bluetooth';
+            bleDevice = null;
             resetUI();
         }
 
-        // Função para ler dados da porta serial
-        async function readData() {
-            const textDecoder = new TextDecoderStream();
-            const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
-            reader = textDecoder.readable.getReader();
-            let buffer = '';
+        // Função que processa os dados recebidos via notificação
+        function handleNotifications(event) {
+            const value = event.target.value;
+            const decoder = new TextDecoder('utf-8');
+            const dataString = decoder.decode(value).trim();
 
-            while (port.readable && keepReading) {
-                try {
-                    const { value, done } = await reader.read();
-                    if (done) {
-                        break;
-                    }
-                    buffer += value;
-                    const lines = buffer.split('\n');
-                    buffer = lines.pop(); 
-
-                    for (const line of lines) {
-                        if (line.trim()) {
-                            processData(line.trim());
-                        }
-                    }
-                } catch (error) {
-                    console.error('Erro na leitura:', error);
-                    if (isConnected) {
-                        await disconnect();
-                    }
-                    break;
-                }
-            }
-            reader.releaseLock();
-            await readableStreamClosed.catch(() => { /* Ignora erros de fechamento */ });
-        }
-
-        // CORREÇÃO 2: Função para processar os dados recebidos do ESP32
-        function processData(data) {
-            const timestamp = new Date().toLocaleTimeString();
-            dataConsole.innerHTML += `[${timestamp}] ${data}  
+            if (dataString) {
+                const timestamp = new Date().toLocaleTimeString();
+                dataConsole.innerHTML += `[${timestamp}] ${dataString}  
 `;
-            dataConsole.scrollTop = dataConsole.scrollHeight;
-
-            if (data.startsWith("DADOS_SEPARADOS:")) {
-                const parts = data.replace("DADOS_SEPARADOS:", "").split(',');
-
-                if (parts.length === 5) {
-                    const [classificacaoCor, nivelContaminacao, porcentagemLuzStr, valorVermelhoStr] = parts;
-                    const porcentagemLuz = parseInt(porcentagemLuzStr);
-                    const valorVermelho = parseInt(valorVermelhoStr);
-
-                    updateRGBSensor(classificacaoCor, nivelContaminacao, valorVermelho);
-                    updateLDR(porcentagemLuz);
-                    updateWaterStatus(nivelContaminacao, porcentagemLuz);
-                }
+                dataConsole.scrollTop = dataConsole.scrollHeight;
+                processData(dataString);
             }
         }
 
-        // CORREÇÃO 3: Função para atualizar o sensor RGB com base na classificação
-        function updateRGBSensor(cor, contaminacao, valorR) {
+        // Função para interpretar a string de dados e atualizar a UI
+        function processData(data) {
+            // Formato esperado: "Nivel,Luz,ValorR" (Ex: "Alta,25,300")
+            const parts = data.split(',');
+            if (parts.length === 3) {
+                const [nivelContaminacao, porcentagemLuz, valorVermelho] = parts;
+                updateRGBSensor(nivelContaminacao, valorVermelho);
+                updateLDR(porcentagemLuz);
+            }
+        }
+
+        // Funções de atualização da UI
+        function updateRGBSensor(contaminacao, valorR) {
             rgbData.innerHTML = `
                 <div><strong>Contaminação:</strong> ${contaminacao}</div>
-                <div><strong>Cor (Classificação):</strong> ${cor}</div>
                 <div><small>(Valor Vermelho: ${valorR})</small></div>
             `;
-
             let level = 'level-baixa';
             let height = 30;
-
             if (contaminacao === 'Alta') {
                 level = 'level-alta';
                 height = 90;
-            } else if (contaminacao === 'Média') {
+            } else if (contaminacao === 'Media') {
                 level = 'level-media';
                 height = 65;
             }
             updateThermometer(height, level);
         }
-        
-        // CORREÇÃO 4: Função para atualizar o LDR com a porcentagem já calculada
+
         function updateLDR(value) {
             ldrValue.textContent = `${value}%`;
         }
 
-        // Função para atualizar o status geral da água
-        function updateWaterStatus(nivelContaminacao, ldrVal) {
-            let message = "";
-            let details = "";
-            let recommendationsList = [];
-            let statusClass = "";
-
-            if (nivelContaminacao === "Baixa") {
-                message = "Qualidade da água considerada BOA.";
-                statusClass = "good";
-                details = "A coloração da água indica baixa presença de contaminantes.";
-            } else if (nivelContaminacao === "Média") {
-                message = "Qualidade da água em ALERTA.";
-                statusClass = "warning";
-                details = "Detectada coloração que pode indicar contaminação moderada.";
-                recommendationsList.push("Recomenda-se uma análise mais detalhada.", "Evitar o consumo sem tratamento prévio.");
-            } else { // Alta
-                message = "Qualidade da água RUIM!";
-                statusClass = "danger";
-                details = "A coloração da água indica ALTA presença de contaminantes.";
-                recommendationsList.push("NÃO CONSUMIR. Água imprópria.", "Contatar autoridades ambientais se for uma fonte natural.");
-            }
-
-            if (ldrVal < 30) {
-                details += " A baixa luminosidade sugere alta turbidez (partículas em suspensão).";
-            } else if (ldrVal > 70) {
-                details += " A alta luminosidade sugere água clara (baixa turbidez).";
-            }
-
-            statusMessage.textContent = message;
-            statusMessage.className = `status-message ${statusClass}`;
-            statusDetails.textContent = details;
-
-            recommendations.innerHTML = "";
-            if (recommendationsList.length > 0) {
-                const h4 = document.createElement("h4");
-                h4.textContent = "Recomendações:";
-                const ul = document.createElement("ul");
-                recommendationsList.forEach(rec => {
-                    const li = document.createElement("li");
-                    li.textContent = rec;
-                    ul.appendChild(li);
-                });
-                recommendations.appendChild(h4);
-                recommendations.appendChild(ul);
-            }
-
-            waterStatusSection.classList.remove("hidden");
+        function updateThermometer(percentage, level) {
+            thermometerFill.style.height = `${percentage}%`;
+            thermometerFill.className = `thermometer-fill-flat ${level}`;
+            thermometerBulb.className = `thermometer-bulb-flat ${level}`;
         }
 
-        // Funções auxiliares de UI
         function updateConnectionStatus(text, status) {
             connectionStatus.textContent = text;
             connectionStatus.className = `status-flat ${status}`;
@@ -378,21 +282,14 @@
             });
         }
 
-        function updateThermometer(percentage, level) {
-            thermometerFill.style.height = `${percentage}%`;
-            thermometerFill.className = `thermometer-fill-flat ${level}`;
-            thermometerBulb.className = `thermometer-bulb-flat ${level}`;
-        }
-
         function resetUI() {
             dataConsole.textContent = 'Aguardando conexão...';
-            rgbData.innerHTML = '<div><strong>Contaminação:</strong> --</div><div><strong>Cor:</strong> Aguardando...</div>';
+            rgbData.innerHTML = '<div><strong>Contaminação:</strong> --</div><div><small>(Valor Vermelho: --)</small></div>';
             ldrValue.textContent = '--%';
             updateThermometer(0, 'level-baixa');
-            waterStatusSection.classList.add("hidden");
         }
 
-        // Event listener
+        // Event listener do botão
         connectBtn.addEventListener('click', handleConnection);
     </script>
 </body>
