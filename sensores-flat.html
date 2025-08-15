@@ -6,7 +6,7 @@
     <title>Bio-Guard - Sensores</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* O CSS original permanece o mesmo, sem alterações */
+        /* O CSS original permanece o mesmo */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #4FC3F7 0%, #29B6F6 50%, #03A9F4 100% ); color: #333; line-height: 1.6; min-height: 100vh; }
         .header { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
@@ -51,18 +51,6 @@
         .level-baixa { background: #4CAF50 !important; }
         .level-media { background: #FF9800 !important; }
         .level-alta { background: #F44336 !important; }
-        .hidden { display: none; }
-        .water-status-card { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 30px; margin: 30px; text-align: left; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
-        .water-status-card h3 { font-size: 1.5rem; color: #03A9F4; margin-bottom: 20px; text-align: center; }
-        .status-message { font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; padding: 15px; border-radius: 8px; text-align: center; }
-        .status-message.good { background: #E8F5E8; color: #2E7D32; border-left: 4px solid #4CAF50; }
-        .status-message.warning { background: #FFF3E0; color: #F57C00; border-left: 4px solid #FF9800; }
-        .status-message.danger { background: #FFEBEE; color: #C62828; border-left: 4px solid #F44336; }
-        .status-details { font-size: 1rem; color: #555; margin-bottom: 15px; line-height: 1.6; }
-        .recommendations { background: #E3F2FD; padding: 15px; border-radius: 8px; border-left: 4px solid #03A9F4; }
-        .recommendations h4 { color: #1976D2; margin-bottom: 10px; font-size: 1.1rem; }
-        .recommendations ul { margin-left: 20px; color: #555; }
-        .recommendations li { margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -83,14 +71,14 @@
     </section>
     <main class="main-content">
         <div class="connection-info">
-            <h3>📋 Como conectar ao Bio-Guard:</h3>
+            <h3>📋 Como conectar ao Bio-Guard (Modo BLE):</h3>
             <div class="connection-steps">
                 <div class="step"><span class="step-number">1.</span> Ligue o ESP32. Não é necessário parear antes.</div>
                 <div class="step"><span class="step-number">2.</span> Clique no botão "Conectar ao Bio-Guard".</div>
                 <div class="step"><span class="step-number">3.</span> Selecione "Bio-Guard" na janela que aparecer.</div>
                 <div class="step"><span class="step-number">4.</span> Aguarde a conexão e o início dos dados.</div>
             </div>
-            <div class="note"><strong>Nota:</strong> Use Chrome ou Edge em um computador ou Android. O iOS não é compatível.</div>
+            <div class="note"><strong>Nota:</strong> Use Chrome ou Edge em um computador ou Android.</div>
         </div>
         <div class="sensors-grid">
             <div class="sensor-card">
@@ -127,7 +115,7 @@
 
     <script>
         // ===================================================================
-        // SCRIPT ATUALIZADO PARA USAR A WEB BLUETOOTH API
+        // SCRIPT ATUALIZADO PARA USAR A WEB BLUETOOTH API COM BLE
         // ===================================================================
 
         // Elementos da UI
@@ -144,12 +132,10 @@
         // Variáveis de estado da conexão
         let bleDevice;
         let bleServer;
-        let sppService;
-        let sppCharacteristic;
 
-        // UUID do Serviço e Característica para Serial Port Profile (SPP)
-        const SPP_SERVICE_UUID = '00001101-0000-1000-8000-00805f9b34fb';
-        const SPP_CHARACTERISTIC_UUID = '00001101-0000-1000-8000-00805f9b34fb'; // Em alguns casos, a característica pode ser diferente, mas para SPP sobre BLE, geralmente é a mesma.
+        // UUIDs do Serviço e Característica definidos no código do ESP32
+        const SERVICE_UUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
+        const CHARACTERISTIC_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
 
         // Verifica se o navegador suporta Web Bluetooth
         if (!navigator.bluetooth) {
@@ -166,29 +152,29 @@
             }
         }
 
-        // Função para conectar ao dispositivo Bluetooth
+        // Função para conectar ao dispositivo BLE
         async function connect() {
             try {
                 updateConnectionStatus('Procurando...', 'connecting');
                 
+                // Procura por um dispositivo que anuncie o nosso serviço específico
                 bleDevice = await navigator.bluetooth.requestDevice({
-                    filters: [{ name: 'Bio-Guard' }],
-                    optionalServices: [SPP_SERVICE_UUID]
+                    filters: [{ services: [SERVICE_UUID] }]
                 });
 
                 updateConnectionStatus('Conectando ao GATT...', 'connecting');
                 bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
                 bleServer = await bleDevice.gatt.connect();
 
-                updateConnectionStatus('Obtendo Serviço SPP...', 'connecting');
-                sppService = await bleServer.getPrimaryService(SPP_SERVICE_UUID);
+                updateConnectionStatus('Obtendo Serviço...', 'connecting');
+                const service = await bleServer.getPrimaryService(SERVICE_UUID);
 
                 updateConnectionStatus('Obtendo Característica...', 'connecting');
-                sppCharacteristic = await sppService.getCharacteristic(SPP_CHARACTERISTIC_UUID);
+                const characteristic = await service.getCharacteristic(CHARACTERISTIC_UUID);
 
                 updateConnectionStatus('Iniciando notificações...', 'connecting');
-                await sppCharacteristic.startNotifications();
-                sppCharacteristic.addEventListener('characteristicvaluechanged', handleNotifications);
+                await characteristic.startNotifications();
+                characteristic.addEventListener('characteristicvaluechanged', handleNotifications);
 
                 updateConnectionStatus('Conectado', 'connected');
                 connectBtn.textContent = 'Desconectar';
