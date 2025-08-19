@@ -297,11 +297,147 @@
             if (parts.length === 3) {
                 const [_, porcentagemLuz, valorVermelho] = parts; // Ignora o nivelContaminacao vindo do ESP32
                 
-                // Determina o nivelContaminacao com base no valorVermelho e nos novos limites
+                // Determina o nivelContaminacao com base no valorVermelho e nos NOVOS limites
                 const valorRgbNum = parseInt(valorVermelho);
                 let nivelContaminacaoCalculado = "";
-                if (valorRgbNum < 24
-(Content truncated due to size limit. Use page ranges or line ranges to read remaining content)
+                
+                // NOVOS LIMITES ATUALIZADOS:
+                // 0-235: Baixo
+                // 236-330: Médio  
+                // 331-5000: Alto
+                if (valorRgbNum >= 0 && valorRgbNum <= 235) {
+                    nivelContaminacaoCalculado = "Baixa";
+                } else if (valorRgbNum >= 236 && valorRgbNum <= 330) {
+                    nivelContaminacaoCalculado = "Média";
+                } else if (valorRgbNum >= 331 && valorRgbNum <= 5000) {
+                    nivelContaminacaoCalculado = "Alta";
+                } else {
+                    nivelContaminacaoCalculado = "Fora do intervalo";
+                }
+                
+                const porcentagemLuzNum = parseInt(porcentagemLuz);
 
+                // Atualiza os dados do sensor RGB
+                updateRgbSensor(nivelContaminacaoCalculado, valorRgbNum);
+                
+                // Atualiza o sensor LDR
+                updateLdrSensor(porcentagemLuzNum);
+                
+                // Atualiza a interpretação dos dados
+                updateInterpretation(nivelContaminacaoCalculado, valorRgbNum, porcentagemLuzNum);
+            }
+        }
 
-ao vivo
+        // Função para atualizar o display do sensor RGB
+        function updateRgbSensor(nivel, valorVermelho) {
+            // Atualiza os dados exibidos
+            rgbData.innerHTML = `
+                <div><strong>Contaminação:</strong> ${nivel}</div>
+                <div><small>(Valor Vermelho: ${valorVermelho})</small></div>
+            `;
+
+            // Remove classes anteriores e adiciona a nova
+            thermometerFill.className = 'thermometer-fill-flat';
+            thermometerBulb.className = 'thermometer-bulb-flat';
+            
+            let fillHeight, levelClass;
+            
+            if (nivel === "Baixa") {
+                fillHeight = "30%";
+                levelClass = "level-baixa";
+            } else if (nivel === "Média") {
+                fillHeight = "65%";
+                levelClass = "level-media";
+            } else if (nivel === "Alta") {
+                fillHeight = "95%";
+                levelClass = "level-alta";
+            } else {
+                fillHeight = "10%";
+                levelClass = "level-baixa"; // Default
+            }
+
+            thermometerFill.style.height = fillHeight;
+            thermometerFill.classList.add(levelClass);
+            thermometerBulb.classList.add(levelClass);
+
+            // Atualiza o status
+            updateStatus(rgbStatus, 'Ativo', 'connected');
+        }
+
+        // Função para atualizar o display do sensor LDR
+        function updateLdrSensor(porcentagem) {
+            ldrValue.textContent = `${porcentagem}%`;
+            updateStatus(ldrStatus, 'Ativo', 'connected');
+        }
+
+        // Função para atualizar a interpretação dos dados dos sensores
+        function updateInterpretation(nivelContaminacao, valorRgb, porcentagemLuz) {
+            let statusClass, statusText, detalhes;
+
+            if (nivelContaminacao === "Baixa") {
+                statusClass = "status-bom";
+                statusText = "Qualidade da água: BOA";
+                detalhes = `Níveis baixos de contaminação detectados (RGB: ${valorRgb}). A água apresenta condições adequadas para consumo. Luminosidade: ${porcentagemLuz}% - indicando boa transparência da água.`;
+            } else if (nivelContaminacao === "Média") {
+                statusClass = "status-atencao";
+                statusText = "Qualidade da água: ATENÇÃO";
+                detalhes = `Níveis médios de contaminação detectados (RGB: ${valorRgb}). Recomenda-se monitoramento mais frequente e possível tratamento. Luminosidade: ${porcentagemLuz}% - pode indicar início de turbidez.`;
+            } else if (nivelContaminacao === "Alta") {
+                statusClass = "status-critico";
+                statusText = "Qualidade da água: CRÍTICA";
+                detalhes = `Altos níveis de contaminação detectados (RGB: ${valorRgb}). AÇÃO IMEDIATA NECESSÁRIA! A água não é adequada para consumo e requer tratamento urgente. Luminosidade: ${porcentagemLuz}% - indicando possível alta turbidez.`;
+            } else {
+                statusClass = "status-atencao";
+                statusText = "Qualidade da água: DADOS INCONSISTENTES";
+                detalhes = `Valor RGB fora do intervalo esperado (${valorRgb}). Verifique o funcionamento do sensor e a calibração do sistema.`;
+            }
+
+            interpretationText.innerHTML = `<span class="status-indicator ${statusClass}"></span>${statusText}`;
+            interpretationDetails.textContent = detalhes;
+        }
+
+        // Função para atualizar o status de conexão
+        function updateConnectionStatus(text, status) {
+            connectionStatus.textContent = text;
+            connectionStatus.className = `status-flat ${status}`;
+        }
+
+        // Função para atualizar o status de um sensor individual
+        function updateStatus(element, text, status) {
+            element.textContent = text;
+            element.className = `status-flat ${status}`;
+        }
+
+        // Função para resetar a UI quando desconectado
+        function resetUI() {
+            // Reset RGB sensor
+            rgbData.innerHTML = `
+                <div><strong>Contaminação:</strong> --</div>
+                <div><small>(Valor Vermelho: --)</small></div>
+            `;
+            thermometerFill.style.height = "30%";
+            thermometerFill.className = 'thermometer-fill-flat level-baixa';
+            thermometerBulb.className = 'thermometer-bulb-flat level-baixa';
+            updateStatus(rgbStatus, 'Desconectado', 'disconnected');
+
+            // Reset LDR sensor
+            ldrValue.textContent = '--%';
+            updateStatus(ldrStatus, 'Desconectado', 'disconnected');
+
+            // Reset interpretation
+            interpretationText.innerHTML = '<span class="status-indicator status-bom"></span>Aguardando dados dos sensores para análise...';
+            interpretationDetails.textContent = 'Conecte-se ao dispositivo Bio-Guard para receber informações detalhadas sobre a qualidade da água.';
+
+            // Reset console
+            dataConsole.innerHTML = 'Aguardando conexão...';
+        }
+
+        // Event listener para o botão de conexão
+        connectBtn.addEventListener('click', handleConnection);
+
+        // Inicialização
+        console.log('Bio-Guard Web Interface v2.0 - BLE Ready');
+        console.log('Novos limites RGB: 0-235 (Baixo), 236-330 (Médio), 331-5000 (Alto)');
+    </script>
+</body>
+</html>
