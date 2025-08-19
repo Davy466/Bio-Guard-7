@@ -227,33 +227,61 @@
         // Função para conectar ao dispositivo BLE
         async function connect() {
             try {
+                console.log('=== INICIANDO CONEXÃO BLE ===');
+                console.log('SERVICE_UUID:', SERVICE_UUID);
+                console.log('CHARACTERISTIC_UUID:', CHARACTERISTIC_UUID);
+                console.log('Navegador suporta Bluetooth:', !!navigator.bluetooth);
+                
                 updateConnectionStatus('Procurando...', 'connecting');
+                
+                console.log('Chamando navigator.bluetooth.requestDevice...');
                 
                 // Procura por um dispositivo que anuncie o nosso serviço específico
                 bleDevice = await navigator.bluetooth.requestDevice({
                     filters: [{ services: [SERVICE_UUID] }]
                 });
 
+                console.log('Dispositivo encontrado:', bleDevice.name);
                 updateConnectionStatus('Conectando ao GATT...', 'connecting');
+                
                 bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
+                console.log('Conectando ao servidor GATT...');
                 bleServer = await bleDevice.gatt.connect();
 
+                console.log('Conectado ao GATT, obtendo serviço...');
                 updateConnectionStatus('Obtendo Serviço...', 'connecting');
                 const service = await bleServer.getPrimaryService(SERVICE_UUID);
 
+                console.log('Serviço obtido, obtendo característica...');
                 updateConnectionStatus('Obtendo Característica...', 'connecting');
                 const characteristic = await service.getCharacteristic(CHARACTERISTIC_UUID);
 
+                console.log('Característica obtida, iniciando notificações...');
                 updateConnectionStatus('Iniciando notificações...', 'connecting');
                 await characteristic.startNotifications();
                 characteristic.addEventListener('characteristicvaluechanged', handleNotifications);
 
+                console.log('=== CONEXÃO BLE ESTABELECIDA COM SUCESSO ===');
                 updateConnectionStatus('Conectado', 'connected');
                 connectBtn.textContent = 'Desconectar';
 
             } catch (error) {
-                console.error('Erro na conexão:', error);
-                alert('Falha na conexão: ' + error.message);
+                console.error('=== ERRO NA CONEXÃO BLE ===');
+                console.error('Tipo do erro:', error.name);
+                console.error('Mensagem do erro:', error.message);
+                console.error('Stack trace:', error.stack);
+                
+                let errorMessage = 'Falha na conexão: ' + error.message;
+                
+                if (error.name === 'NotFoundError') {
+                    errorMessage = 'Dispositivo Bio-Guard não encontrado. Verifique se o ESP32 está ligado e anunciando o serviço BLE.';
+                } else if (error.name === 'SecurityError') {
+                    errorMessage = 'Erro de segurança. Certifique-se de estar usando HTTPS ou localhost.';
+                } else if (error.name === 'NotSupportedError') {
+                    errorMessage = 'Bluetooth não suportado neste navegador/dispositivo.';
+                }
+                
+                alert(errorMessage);
                 disconnect();
             }
         }
@@ -433,7 +461,12 @@
         }
 
         // Event listener para o botão de conexão
-        connectBtn.addEventListener('click', handleConnection);
+        connectBtn.addEventListener('click', () => {
+            console.log('=== BOTÃO CONECTAR CLICADO ===');
+            console.log('Estado atual do botão:', connectBtn.textContent);
+            console.log('Device conectado:', bleDevice && bleDevice.gatt.connected);
+            handleConnection();
+        });
 
         // Inicialização
         console.log('Bio-Guard Web Interface v2.0 - BLE Ready');
