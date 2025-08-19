@@ -293,111 +293,15 @@
         // Função para interpretar a string de dados e atualizar a UI
         function processData(data) {
             // Formato esperado: "Nivel,Luz,ValorR" (Ex: "Alta,25,300")
-            const parts = data.split(',');
+            const parts = data.split(",");
             if (parts.length === 3) {
-                const [nivelContaminacao, porcentagemLuz, valorVermelho] = parts;
-                updateRGBSensor(nivelContaminacao, valorVermelho);
-                updateLDR(porcentagemLuz);
-                updateInterpretation(nivelContaminacao, porcentagemLuz, valorVermelho);
-            }
-        }
+                const [_, porcentagemLuz, valorVermelho] = parts; // Ignora o nivelContaminacao vindo do ESP32
+                
+                // Determina o nivelContaminacao com base no valorVermelho e nos novos limites
+                const valorRgbNum = parseInt(valorVermelho);
+                let nivelContaminacaoCalculado = "";
+                if (valorRgbNum < 24
+(Content truncated due to size limit. Use page ranges or line ranges to read remaining content)
 
-        // Nova função para atualizar a interpretação dos dados
-        function updateInterpretation(contaminacao, luz, valorR) {
-            let statusClass = '';
-            let interpretationMessage = '';
-            let detailsMessage = '';
-            let borderColor = '';
 
-            // Análise baseada no nível de contaminação
-            if (contaminacao === 'Baixa') {
-                statusClass = 'status-bom';
-                borderColor = '#4CAF50';
-                interpretationMessage = '✅ Água em boas condições';
-                detailsMessage = `A água apresenta baixo nível de contaminação (valor vermelho: ${valorR}). A luminosidade está em ${luz}%, indicando boa transparência. A água está adequada para uso.`;
-            } else if (contaminacao === 'Media') {
-                statusClass = 'status-atencao';
-                borderColor = '#FF9800';
-                interpretationMessage = '⚠️ Água com contaminação moderada';
-                detailsMessage = `A água apresenta nível médio de contaminação (valor vermelho: ${valorR}). A luminosidade de ${luz}% sugere alguma turbidez. Recomenda-se monitoramento contínuo e possível tratamento.`;
-            } else if (contaminacao === 'Alta') {
-                statusClass = 'status-critico';
-                borderColor = '#F44336';
-                interpretationMessage = '🚨 Água altamente contaminada';
-                detailsMessage = `A água apresenta alto nível de contaminação (valor vermelho: ${valorR}). A luminosidade de ${luz}% indica alta turbidez. A água NÃO está adequada para uso e requer tratamento imediato.`;
-            } else {
-                statusClass = 'status-bom';
-                borderColor = '#03A9F4';
-                interpretationMessage = '📊 Analisando dados...';
-                detailsMessage = 'Recebendo dados dos sensores para análise da qualidade da água.';
-            }
-
-            // Análise adicional baseada na luminosidade
-            const luzNum = parseInt(luz);
-            if (luzNum < 20) {
-                detailsMessage += ' A baixa luminosidade indica alta turbidez na água.';
-            } else if (luzNum > 80) {
-                detailsMessage += ' A alta luminosidade indica boa transparência da água.';
-            }
-
-            // Atualizar elementos da UI
-            interpretationText.innerHTML = `<span class="status-indicator ${statusClass}"></span>${interpretationMessage}`;
-            interpretationDetails.textContent = detailsMessage;
-            interpretationBox.style.borderLeftColor = borderColor;
-        }
-
-        // Funções de atualização da UI
-        function updateRGBSensor(contaminacao, valorR) {
-            rgbData.innerHTML = `
-                <div><strong>Contaminação:</strong> ${contaminacao}</div>
-                <div><small>(Valor Vermelho: ${valorR})</small></div>
-            `;
-            let level = 'level-baixa';
-            let height = 30;
-            if (contaminacao === 'Alta') {
-                level = 'level-alta';
-                height = 90;
-            } else if (contaminacao === 'Media') {
-                level = 'level-media';
-                height = 65;
-            }
-            updateThermometer(height, level);
-        }
-
-        function updateLDR(value) {
-            ldrValue.textContent = `${value}%`;
-        }
-
-        function updateThermometer(percentage, level) {
-            thermometerFill.style.height = `${percentage}%`;
-            thermometerFill.className = `thermometer-fill-flat ${level}`;
-            thermometerBulb.className = `thermometer-bulb-flat ${level}`;
-        }
-
-        function updateConnectionStatus(text, status) {
-            connectionStatus.textContent = text;
-            connectionStatus.className = `status-flat ${status}`;
-            const sensorStatusText = status === 'connected' ? 'Conectado' : (status === 'connecting' ? 'Conectando...' : 'Desconectado');
-            [rgbStatus, ldrStatus].forEach(el => {
-                el.textContent = sensorStatusText;
-                el.className = `status-flat ${status}`;
-            });
-        }
-
-        function resetUI() {
-            dataConsole.textContent = 'Aguardando conexão...';
-            rgbData.innerHTML = '<div><strong>Contaminação:</strong> --</div><div><small>(Valor Vermelho: --)</small></div>';
-            ldrValue.textContent = '--%';
-            updateThermometer(0, 'level-baixa');
-            
-            // Reset da interpretação
-            interpretationText.innerHTML = '<span class="status-indicator status-bom"></span>Aguardando dados dos sensores para análise...';
-            interpretationDetails.textContent = 'Conecte-se ao dispositivo Bio-Guard para receber informações detalhadas sobre a qualidade da água.';
-            interpretationBox.style.borderLeftColor = '#03A9F4';
-        }
-
-        // Event listener do botão
-        connectBtn.addEventListener('click', handleConnection);
-    </script>
-</body>
-</html>
+ao vivo
