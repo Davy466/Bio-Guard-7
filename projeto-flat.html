@@ -418,21 +418,15 @@
             </h2>
             <div class="section-content">
                 <p>
-                    O Bio-Guard é um sistema portátil e inovador desenvolvido para monitorar a qualidade da água em tempo real, 
-                    utilizando sensores avançados conectados a um microcontrolador ESP32. Nossa solução integra sensores de pH, 
-                    condutividade e RGB para oferecer uma análise completa e acessível da qualidade hídrica.
+                    O Bio-Guard é um sistema portátil e inovador desenvolvido para monitorar a qualidade da água em tempo real, unindo biotecnologia e eletrônica aplicada. Nossa solução integra sensores físicos (RGB, LDR e óptico) conectados a um microcontrolador ESP32, além de utilizar uma cepa de Escherichia coli geneticamente modificada como biossensor, capaz de reagir a poluentes presentes na água.
                 </p>
                 
                 <p>
-                    A escolha deste projeto surge da crescente preocupação com a poluição hídrica no Brasil e da necessidade 
-                    urgente de soluções tecnológicas acessíveis para monitoramento ambiental. A água limpa é um recurso 
-                    essencial para a saúde humana, agricultura sustentável e preservação do meio ambiente.
+                    A escolha deste projeto surge da crescente preocupação com a poluição hídrica no Brasil e da necessidade urgente de soluções tecnológicas e biológicas acessíveis para o monitoramento ambiental. A água limpa é um recurso essencial para a saúde humana, agricultura sustentável e preservação dos ecossistemas.
                 </p>
                 
                 <div class="highlight-box">
-                    <strong>Dados de apoio:</strong> Segundo a ONU, 40% da população mundial enfrenta escassez de água potável, 
-                    e no Brasil, rios urbanos apresentam níveis críticos de poluição, tornando projetos como o Bio-Guard 
-                    fundamentais para o futuro sustentável.
+                    <strong>Dados de apoio:</strong> Segundo a ONU, 40% da população mundial enfrenta escassez de água potável, e no Brasil, rios urbanos apresentam níveis críticos de poluição, tornando projetos como o Bio-Guard fundamentais para um futuro sustentável.
                 </div>
             </div>
         </section>
@@ -444,31 +438,31 @@
                 Funcionamento Tecnológico
             </h2>
             <div class="section-content">
-                <p>O sistema Bio-Guard opera através da integração de múltiplos sensores especializados:</p>
+                <p>O sistema Bio-Guard opera através da integração de sensores e de um biossensor biológico:</p>
                 
                 <div class="tech-specs">
                     <div class="tech-card">
                         <h4><span>🎨</span> Sensor RGB (TCS34725)</h4>
-                        <p>Identifica variações na coloração da água, onde tons vermelhos intensos indicam possível contaminação</p>
+                        <p>Identifica variações na coloração da água, onde mudanças intensas de tonalidade podem indicar contaminação.</p>
                     </div>
                     <div class="tech-card">
                         <h4><span>💡</span> Sensor LDR</h4>
-                        <p>Mede a intensidade de luz para análise de turbidez da água</p>
+                        <p>Mede a intensidade de luz, permitindo a análise da turbidez da água.</p>
                     </div>
                     <div class="tech-card">
-                        <h4><span>🧪</span> Sensor de pH</h4>
-                        <p>Mede a acidez ou alcalinidade da água, indicando desequilíbrios químicos</p>
+                        <h4><span>🔬</span> Sensor Óptico</h4>
+                        <p>Detecta partículas suspensas e variações de transparência, ampliando a precisão do monitoramento.</p>
                     </div>
                     <div class="tech-card">
-                        <h4><span>⚡</span> Sensor de Condutividade</h4>
-                        <p>Detecta a concentração de sais e poluentes dissolvidos na água</p>
+                        <h4><span>🧫</span> Biossensor com E. coli</h4>
+                        <p>A bactéria E. coli foi modificada para reagir a determinados poluentes químicos. Sua resposta biológica (mudança de cor ou emissão de sinal luminoso) pode ser captada pelos sensores ópticos e interpretada pelo sistema.</p>
                     </div>
                 </div>
                 
                 <p>
-                    O ESP32 atua como o cérebro do sistema, coletando dados de todos os sensores e transmitindo as informações 
-                    via Bluetooth integrado diretamente para este site. A interface web exibe os dados em tempo real, 
-                    permitindo monitoramento instantâneo e análise contínua da qualidade da água.
+                    O ESP32 atua como o cérebro do sistema, coletando dados dos sensores e transmitindo as informações 
+                    via Bluetooth diretamente para o site do Bio-Guard. A interface web exibe os dados em tempo real, 
+                    permitindo monitoramento instantâneo e contínuo da qualidade da água.
                 </p>
                 
                 <div class="highlight-box">
@@ -486,53 +480,82 @@
                 Construção e Materiais
             </h2>
             <div class="section-content">
-                <p>O desenvolvimento do Bio-Guard envolveu a seleção criteriosa de componentes e uma metodologia estruturada de montagem:</p>
+                <p>O desenvolvimento do Bio-Guard envolveu a seleção criteriosa de componentes e uma metodologia estruturada de montagem.</p>
                 
                 <h4 style="color: #03A9F4; margin: 25px 0 15px 0;">Materiais utilizados:</h4>
                 <div class="materials-grid">
                     <div class="material-item">ESP32 (com Bluetooth integrado)</div>
-                    <div class="material-item">Sensor de pH digital</div>
-                    <div class="material-item">Sensor de condutividade</div>
                     <div class="material-item">Sensor RGB TCS34725</div>
                     <div class="material-item">Sensor LDR</div>
-                    <div class="material-item">Jumpers e protoboard</div>
+                    <div class="material-item">Sensor óptico</div>
+                    <div class="material-item">Protoboard e fios jumper</div>
                     <div class="material-item">LEDs indicadores</div>
                     <div class="material-item">Resistores</div>
                     <div class="material-item">Fonte de alimentação USB</div>
                     <div class="material-item">Bateria recarregável</div>
+                    <div class="material-item">Cepa modificada de E. coli</div>
                 </div>
                 
                 <h4 style="color: #03A9F4; margin: 25px 0 15px 0;">Etapas de construção:</h4>
                 <div class="steps-list">
                     <div class="step-item">
                         <h5>Planejamento e Design</h5>
-                        <p>Elaboração do circuito eletrônico e definição da arquitetura do sistema</p>
+                        <p>definição da arquitetura do sistema físico e biológico.</p>
                     </div>
                     <div class="step-item">
                         <h5>Montagem Física</h5>
-                        <p>Conexão dos componentes na protoboard seguindo o diagrama elétrico</p>
+                        <p>conexão dos sensores no ESP32 utilizando protoboard e jumpers.</p>
+                    </div>
+                    <div class="step-item">
+                        <h5>Integração Biológica</h5>
+                        <p>cultivo controlado da E. coli e definição do método de detecção do sinal biológico.</p>
                     </div>
                     <div class="step-item">
                         <h5>Teste Individual</h5>
-                        <p>Verificação do funcionamento de cada sensor separadamente</p>
+                        <p>verificação de cada sensor separadamente e resposta da E. coli a contaminantes simulados.</p>
                     </div>
                     <div class="step-item">
                         <h5>Programação</h5>
-                        <p>Desenvolvimento do código para ESP32 com algoritmos de leitura e transmissão</p>
+                        <p>desenvolvimento do código do ESP32 para leitura dos sensores e transmissão via Bluetooth.</p>
                     </div>
                     <div class="step-item">
                         <h5>Interface Web</h5>
-                        <p>Criação da interface web com integração Bluetooth para visualização dos dados</p>
+                        <p>criação do site do Bio-Guard, exibindo gráficos e status em tempo real.</p>
                     </div>
                     <div class="step-item">
                         <h5>Calibração</h5>
-                        <p>Testes extensivos e calibração dos sensores para maior precisão</p>
+                        <p>ajustes para alinhar os sensores físicos com a resposta biológica.</p>
                     </div>
                     <div class="step-item">
                         <h5>Otimização</h5>
-                        <p>Ajustes finais e otimização do sistema para melhor desempenho</p>
+                        <p>melhorias finais no desempenho e confiabilidade do sistema.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Site do Bio-Guard -->
+        <section class="content-section">
+            <h2 class="section-title">
+                <span>💻</span>
+                Site do Bio-Guard
+            </h2>
+            <div class="section-content">
+                <p>
+                    O site é a interface digital do projeto, conectando-se via Bluetooth ao ESP32 e exibindo os dados em tempo real.
+                </p>
+                
+                <h4 style="color: #03A9F4; margin: 25px 0 15px 0;">Funcionalidades principais:</h4>
+                <ul>
+                    <li><strong>Dashboard</strong> – gráficos de RGB, turbidez e resposta da E. coli captada pelo sensor óptico.</li>
+                    <li><strong>Histórico</strong> – registros de análises anteriores com data e hora.</li>
+                    <li><strong>Sobre o Projeto</strong> – explicação da proposta, importância ambiental e equipe responsável.</li>
+                    <li><strong>Configurações</strong> – ajustes de conexão e calibração.</li>
+                </ul>
+                
+                <p>
+                    O design do site é minimalista, intuitivo e responsivo, permitindo acesso via celular ou computador.
+                </p>
             </div>
         </section>
 
@@ -543,38 +566,37 @@
                 Aplicações e Impacto
             </h2>
             <div class="section-content">
-                <p>O Bio-Guard possui um amplo espectro de aplicações práticas que podem beneficiar diversos setores da sociedade:</p>
+                <p>O Bio-Guard pode ser aplicado em diferentes contextos:</p>
                 
                 <div class="applications-grid">
                     <div class="application-card">
                         <h5><span>🏞️</span> Monitoramento Ambiental</h5>
-                        <p>Análise de rios, lagos, nascentes e reservatórios para preservação dos ecossistemas aquáticos</p>
+                        <p>rios, lagos, nascentes e reservatórios.</p>
                     </div>
                     <div class="application-card">
                         <h5><span>🚰</span> Controle de Qualidade</h5>
-                        <p>Verificação da qualidade da água potável em residências e estabelecimentos comerciais</p>
+                        <p>análise de água potável em residências e comércios.</p>
                     </div>
                     <div class="application-card">
                         <h5><span>🎓</span> Educação</h5>
-                        <p>Ferramenta pedagógica para ensino de ciências ambientais em escolas e universidades</p>
+                        <p>ferramenta pedagógica em ciências e biotecnologia.</p>
                     </div>
                     <div class="application-card">
                         <h5><span>🌾</span> Agricultura</h5>
-                        <p>Análise da qualidade da água para irrigação e otimização da produção agrícola</p>
+                        <p>análise de água para irrigação.</p>
                     </div>
                     <div class="application-card">
                         <h5><span>🔬</span> Pesquisa</h5>
-                        <p>Estudos de impacto ambiental, poluição hídrica e desenvolvimento sustentável</p>
+                        <p>estudos ambientais e desenvolvimento sustentável.</p>
                     </div>
                     <div class="application-card">
                         <h5><span>🏭</span> Indústria</h5>
-                        <p>Monitoramento de efluentes industriais e controle de processos produtivos</p>
+                        <p>controle de efluentes e processos produtivos.</p>
                     </div>
                 </div>
                 
                 <div class="highlight-box">
-                    <strong>Principais vantagens:</strong> Baixo custo de implementação, portabilidade, dados em tempo real, 
-                    interface intuitiva, potencial educativo elevado e contribuição significativa para a consciência ambiental.
+                    <strong>Principais vantagens:</strong> baixo custo, portabilidade, dados em tempo real, interface intuitiva, combinação de sensores físicos e biológicos, e alto impacto educativo.
                 </div>
             </div>
         </section>
@@ -587,36 +609,31 @@
             </h2>
             <div class="section-content">
                 <p>
-                    Este projeto representou uma jornada de aprendizado extraordinária para nossa equipe. Desenvolvemos 
-                    competências em trabalho colaborativo, programação de microcontroladores, eletrônica aplicada, 
-                    análise de dados e comunicação científica. Os desafios enfrentados nos tornaram mais resilientes 
-                    e criativos na busca por soluções inovadoras.
+                    O projeto Bio-Guard representou uma jornada de aprendizado extraordinária, unindo engenharia eletrônica, programação, biotecnologia e ciência de dados. Desenvolvemos competências em trabalho colaborativo, prototipagem, programação e pesquisa científica.
                 </p>
                 
                 <p>
-                    O Bio-Guard demonstra como a tecnologia pode ser aplicada de forma acessível e eficiente para resolver 
-                    problemas ambientais reais. A integração entre hardware e software, aliada à interface web intuitiva, 
-                    torna o sistema uma ferramenta valiosa para diversos contextos de aplicação.
+                    O Bio-Guard demonstra como a tecnologia e a biologia podem caminhar juntas para resolver problemas ambientais reais. A integração entre sensores, E. coli modificada e interface web intuitiva mostra o potencial de sistemas híbridos no monitoramento da qualidade da água.
                 </p>
                 
                 <h4 style="color: #03A9F4; margin: 25px 0 15px 0;">Próximos passos:</h4>
                 <ul>
-                    <li>Desenvolvimento de uma versão à prova d'água para uso em campo</li>
-                    <li>Implementação de alimentação por energia solar para maior autonomia</li>
-                    <li>Expansão do conjunto de sensores para análises ainda mais completas</li>
-                    <li>Criação de um aplicativo móvel para monitoramento remoto</li>
-                    <li>Estabelecimento de parcerias com órgãos ambientais</li>
+                    <li>Criar uma versão totalmente à prova d’água para uso em campo.</li>
+                    <li>Implementar energia solar para autonomia.</li>
+                    <li>Ampliar o conjunto de biossensores bacterianos para detectar diferentes poluentes.</li>
+                    <li>Desenvolver um aplicativo móvel para monitoramento remoto.</li>
+                    <li>Estabelecer parcerias com órgãos ambientais e instituições de pesquisa.</li>
                 </ul>
                 
                 <div class="quote-box">
-                    "Com o Bio-Guard, a ciência trabalha em defesa da água limpa e da vida."
+                    "Com o Bio-Guard, a ciência e a biotecnologia trabalham em defesa da água limpa e da vida."
                 </div>
             </div>
         </section>
 
         <!-- Back Section -->
         <div class="back-section">
-            <a href="sensores-flat.html" class="back-btn">Voltar para Sensores</a>
+            <a href="index.html" class="back-btn">Voltar para o Início</a>
         </div>
     </main>
 
@@ -626,4 +643,3 @@
     </footer>
 </body>
 </html>
-
