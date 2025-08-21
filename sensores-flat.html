@@ -293,12 +293,26 @@
         // Função para interpretar a string de dados e atualizar a UI
         function processData(data) {
             // Formato esperado: "Nivel,Luz,ValorR" (Ex: "Alta,25,300")
-            const parts = data.split(',');
+            const parts = data.split(",");
             if (parts.length === 3) {
-                const [nivelContaminacao, porcentagemLuz, valorVermelho] = parts;
-                updateRGBSensor(nivelContaminacao, valorVermelho);
+                const [_, porcentagemLuz, valorVermelho] = parts; // Ignora o nivelContaminacao vindo do ESP32
+                
+                // Determina o nivelContaminacao com base no valorVermelho e nos novos limites
+                const valorRgbNum = parseInt(valorVermelho);
+                let nivelContaminacaoCalculado = "";
+                if (valorRgbNum < 245) {
+                    nivelContaminacaoCalculado = "Baixa";
+                } else if (valorRgbNum >= 246 && valorRgbNum <= 330) {
+                    nivelContaminacaoCalculado = "Média";
+                } else if (valorRgbNum >= 331) {
+                    nivelContaminacaoCalculado = "Alta";
+                } else {
+                    nivelContaminacaoCalculado = "--";
+                }
+
+                updateRGBSensor(nivelContaminacaoCalculado, valorVermelho);
                 updateLDR(porcentagemLuz);
-                updateInterpretation(nivelContaminacao, porcentagemLuz, valorVermelho);
+                updateInterpretation(nivelContaminacaoCalculado, porcentagemLuz, valorVermelho);
             }
         }
 
@@ -309,18 +323,24 @@
             let detailsMessage = '';
             let borderColor = '';
 
-            // Análise baseada no nível de contaminação
-            if (contaminacao === 'Baixa') {
+            // Análise baseada no valor RGB (valor vermelho)
+            const valorRgbNum = parseInt(valorR);
+            let nivelContaminacao = '';
+            
+            if (valorRgbNum < 245) {
+                nivelContaminacao = 'Baixa';
                 statusClass = 'status-bom';
                 borderColor = '#4CAF50';
                 interpretationMessage = '✅ Água em boas condições';
                 detailsMessage = `A água apresenta baixo nível de contaminação (valor vermelho: ${valorR}). A luminosidade está em ${luz}%, indicando boa transparência. A água está adequada para uso.`;
-            } else if (contaminacao === 'Media') {
+            } else if (valorRgbNum >= 246 && valorRgbNum <= 330) {
+                nivelContaminacao = 'Média';
                 statusClass = 'status-atencao';
                 borderColor = '#FF9800';
                 interpretationMessage = '⚠️ Água com contaminação moderada';
                 detailsMessage = `A água apresenta nível médio de contaminação (valor vermelho: ${valorR}). A luminosidade de ${luz}% sugere alguma turbidez. Recomenda-se monitoramento contínuo e possível tratamento.`;
-            } else if (contaminacao === 'Alta') {
+            } else if (valorRgbNum >= 331) {
+                nivelContaminacao = 'Alta';
                 statusClass = 'status-critico';
                 borderColor = '#F44336';
                 interpretationMessage = '🚨 Água altamente contaminada';
@@ -348,16 +368,31 @@
 
         // Funções de atualização da UI
         function updateRGBSensor(contaminacao, valorR) {
+            // Determinar nível baseado no valor RGB
+            const valorRgbNum = parseInt(valorR);
+            let nivelContaminacao = '';
+            
+            if (valorRgbNum < 245) {
+                nivelContaminacao = 'Baixa';
+            } else if (valorRgbNum >= 246 && valorRgbNum <= 330) {
+                nivelContaminacao = 'Média';
+            } else if (valorRgbNum >= 331) {
+                nivelContaminacao = 'Alta';
+            } else {
+                nivelContaminacao = '--';
+            }
+            
             rgbData.innerHTML = `
-                <div><strong>Contaminação:</strong> ${contaminacao}</div>
+                <div><strong>Contaminação:</strong> ${nivelContaminacao}</div>
                 <div><small>(Valor Vermelho: ${valorR})</small></div>
             `;
+            
             let level = 'level-baixa';
             let height = 30;
-            if (contaminacao === 'Alta') {
+            if (nivelContaminacao === 'Alta') {
                 level = 'level-alta';
                 height = 90;
-            } else if (contaminacao === 'Media') {
+            } else if (nivelContaminacao === 'Média') {
                 level = 'level-media';
                 height = 65;
             }
@@ -401,3 +436,4 @@
     </script>
 </body>
 </html>
+
